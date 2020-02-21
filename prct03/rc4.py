@@ -1,3 +1,8 @@
+"""
+    Pablo Bethencourt Díaz
+    alu0100658705@ull.edu.es
+"""
+
 import os
 from bcolors import Bcolors as bc
 
@@ -18,8 +23,11 @@ class RC4():
         self.convertir_binario(self.clave, 10)
         self.base = 2
 
-    # Funcion: format_text.
-    # Formatea el mensaje original y la clave en función de la base
+    """
+        Funcion: format_text.
+        Formatea el mensaje original y la clave en función de la base
+    """
+
     def format_texto(self, texto):
         cadena = ''
         salida = []
@@ -71,8 +79,11 @@ class RC4():
                     cadena = ''
         return salida
 
-    # Funcion: check_base.
-    # Comprueba si un carcater pertenece a una determinada base
+    """
+        Funcion: check_base.
+        Comprueba si un carcater pertenece a una determinada base
+    """
+
     def check_base(self, palabra, base=10):
         try:
             int(palabra, base)
@@ -80,8 +91,11 @@ class RC4():
         except ValueError:
             return False
 
-    # Funcion: fill_K
-    # Llena la lista 'K' con los valores de la clave
+    """
+        Funcion: fill_K
+        Llena la lista 'K' con los valores de la clave
+    """
+
     def fill_K(self, clave):
         salida = []
         j = 0
@@ -94,8 +108,11 @@ class RC4():
                 j += 1
         return salida
 
-    # Funcion: inicializar.
-    # Realiza el algoritmo KSA
+    """
+        Funcion: inicializar.
+        Realiza el algoritmo KSA
+    """
+
     def inicializar(self):
         j = 0
         tam = len(self.clave)
@@ -103,14 +120,20 @@ class RC4():
             j = (j + self.S[i] + int(self.K[i])) % 256
             self.swap(j, i)
 
-    # Funcion: crear_cifrado
-    # Genera la secuencia cifrante. LLama al método: generar_secuencia
+    """
+        Funcion: crear_cifrado
+        Genera la secuencia cifrante. LLama al método: generar_secuencia
+    """
+
     def crear_cifrado(self):
         for i in range(len(self.mensaje)):
             self.secuencia_cifrante.append(self.generar_secuencia())
 
-    # Funcion: generar_secuencia
-    # Realiza el algoritmo PRGA. Devuelve el valor de cada elemento que compone la secuencia cifrante
+    """
+        Funcion: generar_secuencia
+        Realiza el algoritmo PRGA. Devuelve el valor de cada elemento que compone la secuencia cifrante
+    """
+
     def generar_secuencia(self):
         a = self.a
         b = self.b
@@ -120,14 +143,20 @@ class RC4():
         self.swap(a, b)
         return self.S[(self.S[a] + self.S[b]) % 256]
 
-    # Funcion: set_ab
-    # Asigna valores a las variables de clase 'a' y 'b' utilizadas en el método 'generar_secuencia'
+    """
+        Funcion: set_ab
+        Asigna valores a las variables de clase 'a' y 'b' utilizadas en el método 'generar_secuencia'
+    """
+
     def set_ab(self, a, b):
         self.a = a
         self.b = b
 
-    # Funcion: cifrar_texo
-    # Pasa el mensaje y la cadena cifrante a binario, luego realiza la operación xor y devuelve la secuencia cifrada.
+    """
+        Funcion: cifrar_texo
+        Pasa el mensaje y la cadena cifrante a binario, luego realiza la operación xor y devuelve la secuencia cifrada.
+    """
+
     def cifrar_texto(self):
         self.convertir_binario(self.mensaje, 10)
         self.convertir_binario(self.secuencia_cifrante, 10)
@@ -142,8 +171,11 @@ class RC4():
                     resultado = resultado + '1'
             self.texto_cifrado.append(resultado)
 
-    # Funcion: convertir_binario
-    # Convierte una secuencia en cualquier base a binario
+    """
+        Funcion: convertir_binario
+        Convierte una secuencia en cualquier base a binario
+    """
+
     def convertir_binario(self, texto, base):
         for i in range(len(texto)):
             num = int(str(texto[i]), base)
@@ -152,46 +184,64 @@ class RC4():
             texto[i] = bits
         return texto
 
-    # Funcion: convertir_hexadecimal
-    # Convierte una secuencia en cualquier base a hexadecimal
+    """
+        Funcion: convertir_hexadecimal
+        Convierte una secuencia en cualquier base a hexadecimal
+    """
+
     def convertir_hexadecimal(self, texto, base):
         for i in range(len(texto)):
             num = int(str(texto[i]), base)
             texto[i] = hex(num).lstrip("0x").rstrip("L")
         return texto
 
-    # Funcion: convertir_texto
-    # Convierte una secuencia en cualquier base a formato texto (ascii)
+    """
+        Funcion: convertir_texto
+        Convierte una secuencia en cualquier base a formato texto (ascii)
+    """
+
     def convertir_texto(self, texto, base):
         for i in range(len(texto)):
             num = int(str(texto[i]), base)
             texto[i] = chr(num)
         return texto
 
-    # Funcion: convertir_decimal
-    # Convierte una secuencia en cualquier base a decimal
+    """
+        Funcion: convertir_decimal
+        Convierte una secuencia en cualquier base a decimal
+    """
+
     def convertir_decimal(self, texto, base):
         for i in range(len(texto)):
             num = int(str(texto[i]), base)
             texto[i] = num
         return texto
 
-    # Funcion: fill_zeros
-    # Añade "leading zeros" a la cadena binaria hasta tener 8 bits
+    """
+        Funcion: fill_zeros
+        Añade "leading zeros" a la cadena binaria hasta tener 8 bits
+    """
+
     def fill_zeros(self, bits):
         while len(bits) % 8 != 0:
             bits = '0' + bits
         return bits
 
-    # Funcion: swap
-    # Intercambia dos valores dentro del vector de estados
+    """ 
+        Funcion: swap
+        Intercambia dos valores dentro del vector de estados
+    """
+
     def swap(self, i, j):
         temp = self.S[i]
         self.S[i] = self.S[j]
         self.S[j] = temp
 
-    # Funcion: imprimir_salida
-    # Imprime el resultado de la ejecución del programa
+    """
+        Funcion: imprimir_salida
+        Imprime el resultado de la ejecución del programa
+    """
+
     def imprimir_salida(self):
         print(f"\n{bc.azul}Salida, base {self.base}:{bc.end}")
         print(
@@ -202,8 +252,11 @@ class RC4():
         print(f"Mensaje de salida:{bc.BOLD} {self.texto_cifrado} {bc.end}\n")
         self.cambiar_base()
 
-    # Funcion: imprimir_texto
-    # Imprime la salida en formato texto
+    """
+        Funcion: imprimir_texto
+        Imprime la salida en formato texto
+    """
+
     def imprimir_texto(self):
         print(f"\n{bc.azul}Salida, base Ascii:{bc.end}")
         print(
@@ -217,8 +270,11 @@ class RC4():
         self.text_to_decimal()
         self.cambiar_base()
 
-    # Funcion: text_to_decimal
-    # Transforma la salida en ascii a formato decimal
+    """
+        Funcion: text_to_decimal
+        Transforma la salida en ascii a formato decimal
+    """
+
     def text_to_decimal(self):
         for i in range(len(self.clave)):
             self.clave[i] = ord(self.clave[i])
@@ -230,8 +286,11 @@ class RC4():
             self.texto_cifrado[i] = ord(self.texto_cifrado[i])
         self.base = 10
 
-    # Funcion: cambiar_base
-    # Realiza el cambio de base en la salida
+    """
+        Funcion: cambiar_base
+        Realiza el cambio de base en la salida
+    """
+
     def cambiar_base(self):
         print("Imprimir la salida en otra base:")
         print(" 1. Binario \n 2. Decimal \n 3. Hexadecimal \n 4. Ascii \n 5. Salir \n")

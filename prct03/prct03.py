@@ -1,3 +1,8 @@
+"""
+    Pablo Bethencourt Díaz
+    alu0100658705@ull.edu.es
+"""
+
 import os
 from bcolors import Bcolors as bc
 import rc4
