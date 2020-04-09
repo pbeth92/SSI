@@ -32,7 +32,7 @@ def cifrado():
         # Formato hexadecimal:
         clave = '00 01 02 03 04 05 06 07 08 09 0A 0B 0C 0D 0E 0F'
         IV = '00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00'
-        texto = '00 11 22 33 44 55 66 77 88 99 AA BB CC DD EE FF 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00'
+        texto = '00 11 22 33 44 55 66 77 88 99 AA BB CC DD EE FF 00 00 00 00 00 00 00 00 00 00'
         cifr = CBC(texto, IV, clave)
         cifr.cifrar_cbc()
     else:

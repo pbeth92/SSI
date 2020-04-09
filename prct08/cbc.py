@@ -102,34 +102,46 @@ class CBC:
 
     def cipher_stealing(self, ind):
         l = 0
+        cont = 0
         i = self.bloques[ind].n_campos
         while i < TAM:
             # Buscamos la columna correspondiente del bloque cifrado anterior
-            j = self.bloques[ind].size - 1
+            j = self.bloques[ind].size
             if i % 4 == 0:
                 # Creamos un nuevo objeto columna y lo añadimos al último bloque
                 column = COL(self.bloques_cifrados[ind-1][j].c_lista)
                 self.bloques[ind].bloque.append(column)
                 self.bloques[ind].size += 1
                 self.bloques[ind].n_campos += 4
-                # Eliminamos esa columna del bloque anterior
-                del self.bloques_cifrados[ind - 1].bloque[j]
-                self.bloques_cifrados[ind - 1].size -= 1
                 i += 4
+                cont += 4
             else:
                 k = i % 4
-                self.bloques[ind][j].c_lista.append(
-                    self.bloques_cifrados[ind-1][j].c_lista[k-l])
-                self.bloques[ind][j].c_lista_bin.append(
-                    self.bloques_cifrados[ind-1][j].c_lista_bin[k-l])
-                self.bloques[ind][j].size += 1
+                self.bloques[ind][j-1].c_lista.append(
+                    self.bloques_cifrados[ind-1][j-1].c_lista[k-l])
+                self.bloques[ind][j-1].c_lista_bin.append(
+                    self.bloques_cifrados[ind-1][j-1].c_lista_bin[k-l])
+                self.bloques[ind][j-1].size += 1
                 self.bloques[ind].n_campos += 1
 
-                del self.bloques_cifrados[ind - 1].bloque[j].c_lista[k-l]
-                del self.bloques_cifrados[ind - 1].bloque[j].c_lista_bin[k-l]
-                self.bloques_cifrados[ind-1][j].size -= 1
                 l += 1
                 i += 1
+                cont += 1
+        # Eliminamos esa columna del bloque anterior
+        j = self.bloques_cifrados[ind - 1].size - 1
+        k = 0
+        cont = TAM - cont
+        while cont < TAM:
+            self.bloques_cifrados[ind - 1].bloque[j].c_lista.pop()
+            self.bloques_cifrados[ind - 1].bloque[j].c_lista_bin.pop()
+            self.bloques_cifrados[ind - 1].bloque[j].size -= 1
+            k += 1
+            if k == 4:
+                k = 0
+                j -= 1
+                self.bloques_cifrados[ind - 1].bloque.pop()
+                self.bloques_cifrados[ind - 1].size - 1
+            cont += 1
 
     def crear_lista(self, cadena):
         h_lista = []
