@@ -107,11 +107,8 @@ class RSA:
                 if cont == self.tam_bloque:
                     result = 0
                     for i in range(len(bloque)):
-                        if cont-1 == 0:
-                            result += alfabeto.index(bloque[i])
-                        else:
-                            result += alfabeto.index(bloque[i]) * \
-                                pow(len(alfabeto), cont-1)
+                        result += alfabeto.index(bloque[i].upper()) * \
+                            pow(len(alfabeto), cont-1)
                         cont -= 1
                     self.cod_num.append(result)
                     bloque.clear()
